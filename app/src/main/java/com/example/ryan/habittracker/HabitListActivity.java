@@ -19,7 +19,8 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-public class HabitListActivity extends AppCompatActivity {
+public class HabitListActivity extends AppCompatActivity
+{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -123,6 +124,31 @@ public class HabitListActivity extends AppCompatActivity {
         }
     }
 
+    public static class TodayHabits extends Fragment
+    {
+        public TodayHabits()
+        {}
+
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public static TodayHabits newInstance(int sectionNumber)
+        {
+            TodayHabits fragment = new TodayHabits();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_habit_list, container, false);
+            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            return rootView;
+        }
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -150,11 +176,11 @@ public class HabitListActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Today's Habits";
                 case 1:
-                    return "SECTION 2";
+                    return "Habits History";
                 case 2:
-                    return "SECTION 3";
+                    return " Your Habits  ";
             }
             return null;
         }
