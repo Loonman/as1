@@ -17,7 +17,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class HabitListActivity extends AppCompatActivity
 {
@@ -31,7 +37,9 @@ public class HabitListActivity extends AppCompatActivity
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    private static ArrayList<HabitHistory> habitList;
+    private static HabitDataStore dataStore;
+    private static ArrayAdapter<HabitHistory> todayFragmentAdapter;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -56,6 +64,11 @@ public class HabitListActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+
+        dataStore = HabitDataStore.getInstance();
+        habitList = dataStore.getHabitHistory(this);
+        todayFragmentAdapter = new ArrayAdapter<HabitHistory>(this, R.layout.list_item, habitList);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
         {
@@ -64,9 +77,19 @@ public class HabitListActivity extends AppCompatActivity
             {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                ArrayList<Integer> daysofweek = new ArrayList<Integer>();
+                daysofweek.add(Calendar.MONDAY);
+                habitList.add(new HabitHistory("Test", daysofweek));
+                saveData();
+                notifyAllAdapters();
             }
         });
 
+    }
+
+    private void saveData()
+    {
+        dataStore.writeHabitHistory(this, habitList);
     }
 
 
@@ -93,6 +116,11 @@ public class HabitListActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static void notifyAllAdapters()
+    {
+        todayFragmentAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -125,22 +153,26 @@ public class HabitListActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
         {
             View rootView = inflater.inflate(R.layout.fragment_habit_list, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }
 
-    public static class TodayHabits extends Fragment
+    /**
+     * Created by Ryan on 2016-09-23.
+     */
+    public static class TodayHabitsFragment extends Fragment
     {
-        public TodayHabits()
+
+        private ListView habitsListView;
+
+        public TodayHabitsFragment()
         {}
 
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public static TodayHabits newInstance(int sectionNumber)
+        public static TodayHabitsFragment newInstance(int sectionNumber)
         {
-            TodayHabits fragment = new TodayHabits();
+            TodayHabitsFragment fragment = new TodayHabitsFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
@@ -150,11 +182,30 @@ public class HabitListActivity extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_habit_list, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.todays_habits));
+            habitsListView = (ListView) rootView.findViewById(R.id.habitListView);
+
+            ArrayList<Integer> testDays = new ArrayList<Integer>();
+            testDays.add(Calendar.MONDAY);
+
+            dataStore.writeHabitHistory(getActivity().getApplicationContext(), habitList);
+
+            habitsListView.setAdapter(todayFragmentAdapter);
+            habitsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    HabitHistory habit = (HabitHistory) parent.getItemAtPosition(position);
+                    habit.addCompletion();
+                    dataStore.writeHabitHistory(getActivity().getApplicationContext(), habitList);
+                    notifyAllAdapters();
+                }
+            });
+
             return rootView;
         }
     }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -174,7 +225,7 @@ public class HabitListActivity extends AppCompatActivity
             // Return a PlaceholderFragment (defined as a static inner class below).
             if(position == 0)
             {
-                return TodayHabits.newInstance(position + 1);
+                return TodayHabitsFragment.newInstance(position + 1);
             }
             else
             {

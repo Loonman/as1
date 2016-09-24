@@ -13,6 +13,8 @@ public class HabitHistory implements Serializable
 {
     private ArrayList<Calendar> CompletionHistory;
 
+    private int completions;
+
     private String name;
 
     private Calendar creationTime;
@@ -30,6 +32,10 @@ public class HabitHistory implements Serializable
         this.creationTime = Calendar.getInstance(); //The current time
 
         this.uuid = UUID.randomUUID();
+
+        this.CompletionHistory = new ArrayList<Calendar>();
+
+        this.completions = 0;
     }
 
     public String getName()
@@ -44,9 +50,16 @@ public class HabitHistory implements Serializable
                this.creationTime.getDisplayName(Calendar.YEAR, Calendar.LONG, Locale.CANADA);
     }
 
+    @Override
+    public String toString()
+    {
+        return this.getName() + " " + String.valueOf(this.completions);
+    }
+
     public void addCompletion()
     {
         this.CompletionHistory.add(Calendar.getInstance());
+        this.completions ++;
     }
 
 }

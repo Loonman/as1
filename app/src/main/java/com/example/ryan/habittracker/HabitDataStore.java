@@ -23,7 +23,10 @@ public class HabitDataStore
 {
     private static HabitDataStore dataStore = new HabitDataStore();
     private static final String FILE = "habits.json";
-    private HabitDataStore(){}
+    private ArrayList<HabitHistory> habits;
+    private Gson gson;
+    private HabitDataStore(){ gson = new Gson(); }
+
 
     public static HabitDataStore getInstance()
     {
@@ -39,7 +42,9 @@ public class HabitDataStore
             Gson gson = new Gson();
             Type habitListType = new TypeToken<ArrayList<HabitHistory>>(){}.getType();
 
-            return gson.fromJson(in, habitListType);
+            habits = gson.fromJson(in, habitListType);
+
+            return new ArrayList<HabitHistory>(habits);
         }
         catch (FileNotFoundException e)
         {
@@ -52,7 +57,7 @@ public class HabitDataStore
 
     }
 
-    public void writeHabitHistory(ArrayList<HabitHistory> habitsList, Context context) throws FileNotFoundException
+    public void writeHabitHistory(Context context, ArrayList<HabitHistory> habitsList)
     {
         try
         {
@@ -61,10 +66,12 @@ public class HabitDataStore
 
             OutputStreamWriter osWriter = new OutputStreamWriter(foStream);
 
-            Gson gson = new Gson();
-
             gson.toJson(habitsList, osWriter);
             osWriter.flush();
+        }
+        catch (FileNotFoundException e)
+        {
+            //Do nothing
         }
         catch (IOException e)
         {
