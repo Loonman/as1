@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Created by Ryan on 2016-09-13.
@@ -18,6 +19,8 @@ public class HabitHistory implements Serializable
 
     private ArrayList<Integer> daysOfWeek; //The days of the week that it should recur
 
+    private UUID uuid;
+
     public HabitHistory(String name, ArrayList<Integer> daysOfWeek)
     {
         this.name = name;
@@ -25,6 +28,8 @@ public class HabitHistory implements Serializable
         this.daysOfWeek = daysOfWeek;
 
         this.creationTime = Calendar.getInstance(); //The current time
+
+        this.uuid = UUID.randomUUID();
     }
 
     public String getName()
