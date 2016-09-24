@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class HabitDataStore
 {
     private static HabitDataStore dataStore = new HabitDataStore();
-
+    private static final String file = "habits.sav";
     private HabitDataStore() {}
 
     public static HabitDataStore getInstance()
@@ -23,7 +23,7 @@ public class HabitDataStore
         return null;
     }
 
-    public void writeHabitHistory(ArrayList<HabitHistory>)
+    public void writeHabitHistory(ArrayList<HabitHistory> habitsList)
     {
         //Serialize the habits and put it on the FS
     }
