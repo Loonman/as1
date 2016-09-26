@@ -45,9 +45,9 @@ public class Habit implements Serializable
 
     public String getCreateTime()
     {
-        return this.creationTime.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.CANADA) + " "  +
-               this.creationTime.getDisplayName(Calendar.DAY_OF_MONTH, Calendar.LONG, Locale.CANADA) + ", " +
-               this.creationTime.getDisplayName(Calendar.YEAR, Calendar.LONG, Locale.CANADA);
+        return this.creationTime.get(Calendar.MONTH) + " "  +
+               this.creationTime.get(Calendar.DAY_OF_MONTH) + ", " +
+               this.creationTime.get(Calendar.YEAR);
     }
 
     @Override
@@ -73,10 +73,19 @@ public class Habit implements Serializable
         }
         return false;
     }
+
     public void addCompletion()
     {
         this.CompletionHistory.add(Calendar.getInstance());
         this.completions ++;
+    }
+
+    public void setCreationTime(int year, int month, int day)
+    {
+        this.creationTime.set(Calendar.YEAR, year);
+        this.creationTime.set(Calendar.MONTH, month);
+        this.creationTime.set(Calendar.DAY_OF_MONTH, day);
+
     }
 
 }

@@ -93,6 +93,16 @@ public class HabitListActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        this.habitList.clear();
+        this.habitList.addAll(dataStore.getHabits());
+        notifyAllAdapters();
+    }
+
     private void saveData()
     {
         dataStore.saveHabitHistory(this);

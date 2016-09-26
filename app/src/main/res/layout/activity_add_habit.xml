@@ -72,7 +72,8 @@
         android:text="Change active date"
         android:id="@+id/button"
         android:layout_below="@+id/CreateDate"
-        android:layout_toEndOf="@+id/Wednesday"/>
+        android:layout_toEndOf="@+id/Wednesday"
+        android:onClick="showDatePickerDialog"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -86,7 +87,7 @@
         android:layout_marginLeft="16dp"
         />
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sunday"
@@ -96,7 +97,7 @@
         android:layout_marginLeft="28dp"
         android:layout_alignStart="@+id/Monday"/>
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Monday"
@@ -105,7 +106,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="28dp"/>
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tuesday"
@@ -114,7 +115,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="28dp"/>
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wednesday"
@@ -124,7 +125,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="28dp"/>
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thursday"
@@ -133,7 +134,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="28dp"/>
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Friday"
@@ -142,7 +143,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="28dp"/>
 
-    <RadioButton
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Saturday"
@@ -157,13 +158,15 @@
         android:id="@+id/createButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:text="Create Habit"/>
+        android:text="Create Habit"
+        android:onClick="createHabit"/>
 
     <Button
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:text="Cancel"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:onClick="cancel"/>
 
 </RelativeLayout>
