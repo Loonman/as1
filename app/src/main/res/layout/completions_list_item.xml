@@ -4,24 +4,24 @@
                 android:layout_height="match_parent"
                 android:descendantFocusability="blocksDescendants">
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:padding="10dp"
-        android:textSize="16sp"
-        android:layout_marginLeft="10dp"
-        android:layout_toStartOf="@+id/add_btn"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/habitName">
+              android:layout_width="wrap_content"
+              android:layout_height="fill_parent"
+              android:padding="10dp"
+              android:textSize="16sp"
+              android:layout_marginLeft="10dp"
+              android:layout_toStartOf="@+id/add_btn"
+              android:layout_alignParentLeft="true"
+              android:id="@+id/habitName">
     </TextView>
 
     <Button
-        android:id="@+id/add_btn"
+        android:id="@+id/del_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:text="Complete" />
+        android:text="Delete" />
 
 
 </RelativeLayout>

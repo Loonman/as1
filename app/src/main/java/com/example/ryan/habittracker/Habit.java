@@ -85,7 +85,16 @@ public class Habit implements Serializable
         this.creationTime.set(Calendar.YEAR, year);
         this.creationTime.set(Calendar.MONTH, month);
         this.creationTime.set(Calendar.DAY_OF_MONTH, day);
+    }
 
+    public ArrayList<Calendar> getCompletions()
+    {
+        return new ArrayList<Calendar>(this.CompletionHistory);
+    }
+
+    public void deleteCompletion(Calendar calendar)
+    {
+        this.CompletionHistory.remove(calendar);
     }
 
 }

@@ -130,6 +130,7 @@ public class AddHabitActivity extends AppCompatActivity
 
         newHabit.setCreationTime(year, month, day);
         dataStore.add(newHabit);
+        dataStore.saveHabitHistory(this);
         finish();
     }
     public void cancel(View v)

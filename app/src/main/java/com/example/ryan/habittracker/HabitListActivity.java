@@ -39,7 +39,9 @@ public class HabitListActivity extends AppCompatActivity
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private static ArrayList<Habit> habitList;
     private static HabitDataStore dataStore;
-    private static ArrayAdapter<Habit> todayFragmentAdapter;
+    //private static ArrayAdapter<Habit> todayFragmentAdapter;
+
+    private static habitViewAdapter todayFragmentAdapter;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -64,29 +66,20 @@ public class HabitListActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
         dataStore = HabitDataStore.getInstance();
         dataStore.loadHabitHistory(this);
         habitList = dataStore.getHabits();
-        todayFragmentAdapter = new ArrayAdapter<Habit>(this, R.layout.list_item, habitList);
-
+        //todayFragmentAdapter = new ArrayAdapter<Habit>(this, R.layout.list_item, habitList);
+        todayFragmentAdapter = new habitViewAdapter(habitList, this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-
                 Intent myIntent = new Intent(getApplicationContext(), AddHabitActivity.class);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(myIntent);
-                ArrayList<Integer> daysofweek = new ArrayList<Integer>();
-                daysofweek.add(Calendar.MONDAY);
-                /*Habit habit = new Habit("Test", daysofweek);
-
-                dataStore.add(habit);
-                habitList.add(habit);
-                saveData();*/
                 notifyAllAdapters();
             }
         });
@@ -200,9 +193,6 @@ public class HabitListActivity extends AppCompatActivity
             View rootView = inflater.inflate(R.layout.fragment_habit_list, container, false);
             habitsListView = (ListView) rootView.findViewById(R.id.habitListView);
 
-            ArrayList<Integer> testDays = new ArrayList<Integer>();
-            testDays.add(Calendar.MONDAY);
-
             dataStore.saveHabitHistory(getActivity().getApplicationContext());
 
             habitsListView.setAdapter(todayFragmentAdapter);
@@ -211,9 +201,11 @@ public class HabitListActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                 {
-                    Habit habit = (Habit) parent.getItemAtPosition(position);
-                    habit.addCompletion();
-                    dataStore.saveHabitHistory(getActivity().getApplicationContext());
+                    //Generate an intent then open the detail view
+                    Intent myIntent = new Intent(getActivity().getApplicationContext(), EditHabitActivity.class);
+                    myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    myIntent.putExtra("Habit", habitList.get(position));
+                    getActivity().getApplicationContext().startActivity(myIntent);
                     notifyAllAdapters();
                 }
             });

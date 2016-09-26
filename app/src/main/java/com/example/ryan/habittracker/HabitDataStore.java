@@ -49,7 +49,11 @@ public class HabitDataStore
 
     public ArrayList<Habit> getHabits()
     {
-        return new ArrayList<Habit>(habits);
+        if (this.habits == null)
+        {
+            this.habits = new ArrayList<Habit>();
+        }
+        return new ArrayList<Habit>(this.habits);
     }
 
     public void loadHabitHistory(Context context)
