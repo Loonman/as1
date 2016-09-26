@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Created by Ryan on 2016-09-13.
  */
-public class HabitHistory implements Serializable
+public class Habit implements Serializable
 {
     private ArrayList<Calendar> CompletionHistory;
 
@@ -23,7 +23,7 @@ public class HabitHistory implements Serializable
 
     private UUID uuid;
 
-    public HabitHistory(String name, ArrayList<Integer> daysOfWeek)
+    public Habit(String name, ArrayList<Integer> daysOfWeek)
     {
         this.name = name;
 
@@ -56,6 +56,23 @@ public class HabitHistory implements Serializable
         return this.getName() + " " + String.valueOf(this.completions);
     }
 
+    @Override
+    public boolean equals(Object otherHabit)
+    {
+        if (otherHabit ==  null || otherHabit.getClass() != getClass())
+        {
+            return false;
+        }
+        if (this.uuid == ((Habit)otherHabit).uuid)
+        {
+            return true;
+        }
+        if (this == otherHabit)
+        {
+            return true;
+        }
+        return false;
+    }
     public void addCompletion()
     {
         this.CompletionHistory.add(Calendar.getInstance());

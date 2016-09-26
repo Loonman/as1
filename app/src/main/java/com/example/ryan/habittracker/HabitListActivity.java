@@ -1,5 +1,6 @@
 package com.example.ryan.habittracker;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,9 +37,9 @@ public class HabitListActivity extends AppCompatActivity
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private static ArrayList<HabitHistory> habitList;
+    private static ArrayList<Habit> habitList;
     private static HabitDataStore dataStore;
-    private static ArrayAdapter<HabitHistory> todayFragmentAdapter;
+    private static ArrayAdapter<Habit> todayFragmentAdapter;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -66,8 +66,9 @@ public class HabitListActivity extends AppCompatActivity
 
 
         dataStore = HabitDataStore.getInstance();
-        habitList = dataStore.getHabitHistory(this);
-        todayFragmentAdapter = new ArrayAdapter<HabitHistory>(this, R.layout.list_item, habitList);
+        dataStore.loadHabitHistory(this);
+        habitList = dataStore.getHabits();
+        todayFragmentAdapter = new ArrayAdapter<Habit>(this, R.layout.list_item, habitList);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
@@ -75,12 +76,17 @@ public class HabitListActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                Intent myIntent = new Intent(getApplicationContext(), AddHabitActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(myIntent);
                 ArrayList<Integer> daysofweek = new ArrayList<Integer>();
                 daysofweek.add(Calendar.MONDAY);
-                habitList.add(new HabitHistory("Test", daysofweek));
-                saveData();
+                /*Habit habit = new Habit("Test", daysofweek);
+
+                dataStore.add(habit);
+                habitList.add(habit);
+                saveData();*/
                 notifyAllAdapters();
             }
         });
@@ -89,7 +95,7 @@ public class HabitListActivity extends AppCompatActivity
 
     private void saveData()
     {
-        dataStore.writeHabitHistory(this, habitList);
+        dataStore.saveHabitHistory(this);
     }
 
 
@@ -187,7 +193,7 @@ public class HabitListActivity extends AppCompatActivity
             ArrayList<Integer> testDays = new ArrayList<Integer>();
             testDays.add(Calendar.MONDAY);
 
-            dataStore.writeHabitHistory(getActivity().getApplicationContext(), habitList);
+            dataStore.saveHabitHistory(getActivity().getApplicationContext());
 
             habitsListView.setAdapter(todayFragmentAdapter);
             habitsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -195,9 +201,9 @@ public class HabitListActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                 {
-                    HabitHistory habit = (HabitHistory) parent.getItemAtPosition(position);
+                    Habit habit = (Habit) parent.getItemAtPosition(position);
                     habit.addCompletion();
-                    dataStore.writeHabitHistory(getActivity().getApplicationContext(), habitList);
+                    dataStore.saveHabitHistory(getActivity().getApplicationContext());
                     notifyAllAdapters();
                 }
             });

@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -23,9 +22,14 @@ public class HabitDataStore
 {
     private static HabitDataStore dataStore = new HabitDataStore();
     private static final String FILE = "habits.json";
-    private ArrayList<HabitHistory> habits;
+    private ArrayList<Habit> habits;
     private Gson gson;
-    private HabitDataStore(){ gson = new Gson(); }
+
+    private HabitDataStore()
+    {
+        habits = new ArrayList<Habit>();
+        gson = new Gson();
+    }
 
 
     public static HabitDataStore getInstance()
@@ -33,23 +37,38 @@ public class HabitDataStore
         return dataStore;
     }
 
-    public ArrayList<HabitHistory> getHabitHistory(Context context)
+    public void add(Habit habit)
+    {
+        this.habits.add(habit);
+    }
+
+    public void remove(Habit habitToRemove)
+    {
+        habits.remove(habitToRemove);
+    }
+
+    public ArrayList<Habit> getHabits()
+    {
+        return new ArrayList<Habit>(habits);
+    }
+
+    public void loadHabitHistory(Context context)
     {
         try
         {
             FileInputStream fileStream = context.openFileInput(FILE);
             BufferedReader in = new BufferedReader(new InputStreamReader(fileStream));
             Gson gson = new Gson();
-            Type habitListType = new TypeToken<ArrayList<HabitHistory>>(){}.getType();
+            Type habitListType = new TypeToken<ArrayList<Habit>>(){}.getType();
 
             habits = gson.fromJson(in, habitListType);
 
-            return new ArrayList<HabitHistory>(habits);
         }
+
         catch (FileNotFoundException e)
         {
-            return new ArrayList<HabitHistory>();
         }
+
         catch (IOException e)
         {
             throw new RuntimeException();
@@ -57,21 +76,22 @@ public class HabitDataStore
 
     }
 
-    public void writeHabitHistory(Context context, ArrayList<HabitHistory> habitsList)
+    public void saveHabitHistory(Context context)
     {
         try
         {
-            //0 means overwrite the entire file, because calculating diffs is stupid
+            //0 means overwrite the entire file
             FileOutputStream foStream = context.openFileOutput(FILE, 0);
 
             OutputStreamWriter osWriter = new OutputStreamWriter(foStream);
 
-            gson.toJson(habitsList, osWriter);
+            gson.toJson(this.habits, osWriter);
+
             osWriter.flush();
         }
         catch (FileNotFoundException e)
         {
-            //Do nothing
+            e.printStackTrace();
         }
         catch (IOException e)
         {
