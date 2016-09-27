@@ -17,6 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
+                android:id="@+id/editHabitName"
                 android:paddingBottom="8dp"
                 android:textColor="@android:color/white"
                 android:textSize="18dp"
@@ -36,8 +37,11 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/completionsHeader">
+            android:layout_height="420dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical"
+            android:layout_below="@+id/completionsHeader"
+            android:id="@+id/completionsList">
         </ListView>
 
         <Button
@@ -47,7 +51,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:text="Delete Habit"
-            android:onClick="createHabit"/>
+            android:onClick="deleteHabit"/>
 
         <Button
             android:layout_width="175dp"

@@ -23,11 +23,13 @@ public class HabitDataStore
     private static HabitDataStore dataStore = new HabitDataStore();
     private static final String FILE = "habits.json";
     private ArrayList<Habit> habits;
+    private ArrayList<Notifiable> notifiables;
     private Gson gson;
 
     private HabitDataStore()
     {
         habits = new ArrayList<Habit>();
+        notifiables = new ArrayList<Notifiable>();
         gson = new Gson();
     }
 
@@ -37,14 +39,26 @@ public class HabitDataStore
         return dataStore;
     }
 
-    public void add(Habit habit)
+    public void addHabit(Habit habit, Context context)
     {
         this.habits.add(habit);
+        this.saveHabitHistory(context);
+        notifyObservers();
     }
 
-    public void remove(Habit habitToRemove)
+    public void removeHabit(Habit habitToRemove, Context context)
     {
-        habits.remove(habitToRemove);
+        ArrayList<Habit> habitsToRemove = new ArrayList<Habit>();
+        for (Habit habit: habits)
+        {
+            if (habit.equals(habitToRemove))
+            {
+                habitsToRemove.add(habit);
+            }
+        }
+        habits.removeAll(habitsToRemove);
+        this.saveHabitHistory(context);
+        notifyObservers();
     }
 
     public ArrayList<Habit> getHabits()
@@ -54,6 +68,24 @@ public class HabitDataStore
             this.habits = new ArrayList<Habit>();
         }
         return new ArrayList<Habit>(this.habits);
+    }
+
+    public void addObserver(Notifiable n)
+    {
+        this.notifiables.add(n);
+    }
+
+    public void removeObserver(Notifiable n)
+    {
+        this.notifiables.remove(n);
+    }
+
+    private void notifyObservers()
+    {
+        for (Notifiable n: this.notifiables)
+        {
+            n.notifyDataChanged();
+        }
     }
 
     public void loadHabitHistory(Context context)
@@ -92,6 +124,8 @@ public class HabitDataStore
             gson.toJson(this.habits, osWriter);
 
             osWriter.flush();
+
+            this.notifyObservers();
         }
         catch (FileNotFoundException e)
         {

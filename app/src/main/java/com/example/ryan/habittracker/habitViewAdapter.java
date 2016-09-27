@@ -53,7 +53,7 @@ public class habitViewAdapter extends BaseAdapter implements ListAdapter
         TextView listItemText = (TextView)view.findViewById(R.id.habitName);
         listItemText.setText(list.get(position).toString());
 
-        //Handle buttons and add onClickListeners
+        //Handle buttons and addHabit onClickListeners
         Button addBtn = (Button)view.findViewById(R.id.add_btn);
 
         addBtn.setOnClickListener(new View.OnClickListener(){

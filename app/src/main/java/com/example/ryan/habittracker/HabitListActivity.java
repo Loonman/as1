@@ -25,7 +25,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class HabitListActivity extends AppCompatActivity
+public class HabitListActivity extends AppCompatActivity implements Notifiable
 {
 
     /**
@@ -39,9 +39,8 @@ public class HabitListActivity extends AppCompatActivity
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private static ArrayList<Habit> habitList;
     private static HabitDataStore dataStore;
-    //private static ArrayAdapter<Habit> todayFragmentAdapter;
-
     private static habitViewAdapter todayFragmentAdapter;
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -68,6 +67,7 @@ public class HabitListActivity extends AppCompatActivity
 
         dataStore = HabitDataStore.getInstance();
         dataStore.loadHabitHistory(this);
+        dataStore.addObserver(this);
         habitList = dataStore.getHabits();
         //todayFragmentAdapter = new ArrayAdapter<Habit>(this, R.layout.list_item, habitList);
         todayFragmentAdapter = new habitViewAdapter(habitList, this);
@@ -80,25 +80,9 @@ public class HabitListActivity extends AppCompatActivity
                 Intent myIntent = new Intent(getApplicationContext(), AddHabitActivity.class);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(myIntent);
-                notifyAllAdapters();
             }
         });
 
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
-        this.habitList.clear();
-        this.habitList.addAll(dataStore.getHabits());
-        notifyAllAdapters();
-    }
-
-    private void saveData()
-    {
-        dataStore.saveHabitHistory(this);
     }
 
 
@@ -127,8 +111,11 @@ public class HabitListActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public static void notifyAllAdapters()
+    @Override
+    public void notifyDataChanged()
     {
+        this.habitList.clear();
+        this.habitList.addAll(dataStore.getHabits());
         todayFragmentAdapter.notifyDataSetChanged();
     }
 
@@ -192,9 +179,6 @@ public class HabitListActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_habit_list, container, false);
             habitsListView = (ListView) rootView.findViewById(R.id.habitListView);
-
-            dataStore.saveHabitHistory(getActivity().getApplicationContext());
-
             habitsListView.setAdapter(todayFragmentAdapter);
             habitsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
@@ -204,9 +188,8 @@ public class HabitListActivity extends AppCompatActivity
                     //Generate an intent then open the detail view
                     Intent myIntent = new Intent(getActivity().getApplicationContext(), EditHabitActivity.class);
                     myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    myIntent.putExtra("Habit", habitList.get(position));
+                    myIntent.putExtra("position", position);
                     getActivity().getApplicationContext().startActivity(myIntent);
-                    notifyAllAdapters();
                 }
             });
 

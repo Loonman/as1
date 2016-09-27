@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -20,6 +21,7 @@ public class completionsListAdapter extends BaseAdapter implements ListAdapter
 {
     private Habit habit;
     private Context context;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
     public completionsListAdapter(Habit habit, Context context) {
         this.habit = habit;
@@ -52,17 +54,16 @@ public class completionsListAdapter extends BaseAdapter implements ListAdapter
 
         //Handle TextView and display string from your list
         TextView listItemText = (TextView)view.findViewById(R.id.habitName);
-        listItemText.setText(habit.getCompletions().toString());
+        listItemText.setText(dateFormat.format(habit.getCompletions().get(position).getTime()));
 
-        //Handle buttons and add onClickListeners
-        Button addBtn = (Button)view.findViewById(R.id.add_btn);
+        //Handle buttons and addHabit onClickListeners
+        Button delBtn = (Button)view.findViewById(R.id.del_btn);
 
-        addBtn.setOnClickListener(new View.OnClickListener(){
+        delBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 habit.deleteCompletion(habit.getCompletions().get(position));
                 notifyDataSetChanged();
-                HabitDataStore.getInstance().saveHabitHistory(context);
             }
         });
 

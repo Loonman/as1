@@ -11,13 +11,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
-import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class AddHabitActivity extends AppCompatActivity
 {
@@ -129,8 +124,7 @@ public class AddHabitActivity extends AppCompatActivity
         Habit newHabit = new Habit(habitName.getText().toString(), daysOfWeek);
 
         newHabit.setCreationTime(year, month, day);
-        dataStore.add(newHabit);
-        dataStore.saveHabitHistory(this);
+        dataStore.addHabit(newHabit, this);
         finish();
     }
     public void cancel(View v)

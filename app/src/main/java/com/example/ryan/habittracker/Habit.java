@@ -63,7 +63,7 @@ public class Habit implements Serializable
         {
             return false;
         }
-        if (this.uuid == ((Habit)otherHabit).uuid)
+        if (this.uuid.equals(((Habit)otherHabit).uuid))
         {
             return true;
         }
@@ -74,11 +74,6 @@ public class Habit implements Serializable
         return false;
     }
 
-    public void addCompletion()
-    {
-        this.CompletionHistory.add(Calendar.getInstance());
-        this.completions ++;
-    }
 
     public void setCreationTime(int year, int month, int day)
     {
@@ -92,9 +87,16 @@ public class Habit implements Serializable
         return new ArrayList<Calendar>(this.CompletionHistory);
     }
 
+    public void addCompletion()
+    {
+        this.CompletionHistory.add(Calendar.getInstance());
+        this.completions ++;
+    }
+
     public void deleteCompletion(Calendar calendar)
     {
         this.CompletionHistory.remove(calendar);
+        this.completions--;
     }
 
 }
