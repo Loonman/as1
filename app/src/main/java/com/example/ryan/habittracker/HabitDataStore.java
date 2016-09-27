@@ -70,6 +70,19 @@ public class HabitDataStore
         return new ArrayList<Habit>(this.habits);
     }
 
+    //This can retrieve habits if we received a serialized copy or only have access to the UUID
+    public Habit getHabit(Habit habitCopy) throws IOException
+    {
+        for (Habit habit: habits)
+        {
+            if (habit.equals(habitCopy))
+            {
+                return habit;
+            }
+        }
+        throw new IOException();
+    }
+
     public void addObserver(Notifiable n)
     {
         this.notifiables.add(n);

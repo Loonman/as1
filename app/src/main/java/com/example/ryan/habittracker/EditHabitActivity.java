@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -18,6 +21,8 @@ public class EditHabitActivity extends AppCompatActivity implements Notifiable
     private Habit habitToView;
     private int position;
     private ListView completionListView;
+    private TextView habitName;
+    private TextView completionCount;
     HabitDataStore dataStore;
 
     @Override
@@ -26,12 +31,21 @@ public class EditHabitActivity extends AppCompatActivity implements Notifiable
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_habit);
         dataStore = HabitDataStore.getInstance();
-        TextView textView = (TextView)findViewById(R.id.editHabitName);
+        dataStore.addObserver(this);
+        habitName = (TextView)findViewById(R.id.editHabitName);
+        completionCount = (TextView)findViewById(R.id.completionsNumber);
 
         Intent intent = getIntent();
-        position = (Integer)intent.getIntExtra("position", 0);
-        habitToView = dataStore.getHabits().get(position);
-        textView.setText(habitToView.getName());
+        try
+        {
+            habitToView = dataStore.getHabit((Habit)intent.getSerializableExtra("Habit"));
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException();
+        }
+        habitName.setText(habitToView.getName());
+        completionCount.setText(String.valueOf(habitToView.getCompletionCount()));
 
 
         completionListView = (ListView) findViewById(R.id.completionsList);
@@ -43,7 +57,7 @@ public class EditHabitActivity extends AppCompatActivity implements Notifiable
     @Override
     public void notifyDataChanged()
     {
-        //Do nothing
+        completionCount.setText(String.valueOf(habitToView.getCompletionCount()));
     }
 
     public void back(View v)
@@ -56,5 +70,12 @@ public class EditHabitActivity extends AppCompatActivity implements Notifiable
     {
         dataStore.removeHabit(habitToView, this);
         finish();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        dataStore.removeObserver(this);
     }
 }

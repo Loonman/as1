@@ -46,12 +46,12 @@ public class habitViewAdapter extends BaseAdapter implements ListAdapter
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_item, null);
+            view = inflater.inflate(R.layout.habits_list_item, null);
         }
 
         //Handle TextView and display string from your list
         TextView listItemText = (TextView)view.findViewById(R.id.habitName);
-        listItemText.setText(list.get(position).toString());
+        listItemText.setText(list.get(position).getName());
 
         //Handle buttons and addHabit onClickListeners
         Button addBtn = (Button)view.findViewById(R.id.add_btn);

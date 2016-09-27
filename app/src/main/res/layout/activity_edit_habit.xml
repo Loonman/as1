@@ -27,20 +27,31 @@
         </LinearLayout>
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="20dp"
+            android:textColor="@android:color/black"
+            android:id="@+id/completionsNumber"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/layout1"/>
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Past Completions"
+            android:text=" past completions"
             android:textSize="20dp"
             android:textColor="@android:color/black"
             android:id="@+id/completionsHeader"
-            android:layout_below="@+id/layout1"/>
+            android:layout_below="@+id/layout1"
+            android:layout_toRightOf="@+id/completionsNumber"/>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="420dp"
             android:layout_weight="1"
             android:scrollbars="vertical"
-            android:layout_below="@+id/completionsHeader"
+            android:layout_below="@+id/completionsNumber"
             android:id="@+id/completionsList">
         </ListView>
 

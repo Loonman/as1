@@ -21,6 +21,7 @@ public class completionsListAdapter extends BaseAdapter implements ListAdapter
 {
     private Habit habit;
     private Context context;
+    private HabitDataStore dataStore;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
     public completionsListAdapter(Habit habit, Context context) {
@@ -63,6 +64,7 @@ public class completionsListAdapter extends BaseAdapter implements ListAdapter
             @Override
             public void onClick(View v) {
                 habit.deleteCompletion(habit.getCompletions().get(position));
+                ((EditHabitActivity)context).notifyDataChanged();
                 notifyDataSetChanged();
             }
         });

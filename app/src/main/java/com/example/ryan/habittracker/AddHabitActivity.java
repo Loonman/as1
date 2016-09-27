@@ -11,28 +11,24 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddHabitActivity extends AppCompatActivity
 {
-    private static int year;
-    private static int month;
-    private static int day;
+    private static Calendar cal;
     private static TextView dateText;
     private HabitDataStore dataStore;
-
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
 
-
-        Calendar cal = Calendar.getInstance();
-        year = cal.get(Calendar.YEAR);
-        month = cal.get(cal.MONTH);
-        day = cal.get(cal.DAY_OF_MONTH);
+        cal = Calendar.getInstance();
         dateText = (TextView)findViewById(R.id.activeDate);
         dataStore = HabitDataStore.getInstance();
         this.showDate();
@@ -70,15 +66,14 @@ public class AddHabitActivity extends AppCompatActivity
 
     public static void setDate(int year, int month, int day)
     {
-        AddHabitActivity.year = year;
-        AddHabitActivity.month = month;
-        AddHabitActivity.day = day;
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, day);
     }
 
     public static void showDate()
     {
-
-        dateText.setText(year + "-" + month + "-" +day);
+        dateText.setText(dateFormat.format(cal.getTime()));
     }
 
     public void createHabit(View v)
@@ -123,7 +118,7 @@ public class AddHabitActivity extends AppCompatActivity
         }
         Habit newHabit = new Habit(habitName.getText().toString(), daysOfWeek);
 
-        newHabit.setCreationTime(year, month, day);
+        newHabit.setCreationTime(cal);
         dataStore.addHabit(newHabit, this);
         finish();
     }

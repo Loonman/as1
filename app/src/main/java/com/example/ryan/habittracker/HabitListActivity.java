@@ -3,7 +3,6 @@ package com.example.ryan.habittracker;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -19,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -38,8 +36,11 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private static ArrayList<Habit> habitList;
+    private static ArrayList<Habit> todayHabitList;
     private static HabitDataStore dataStore;
-    private static habitViewAdapter todayFragmentAdapter;
+    private static habitViewAdapter todayHabitsAdapter;
+    private static habitViewAdapter allHabitsAdapter;
+    private static final int TODAY_SECTION_NUMBER = 0;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -69,8 +70,11 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
         dataStore.loadHabitHistory(this);
         dataStore.addObserver(this);
         habitList = dataStore.getHabits();
-        //todayFragmentAdapter = new ArrayAdapter<Habit>(this, R.layout.list_item, habitList);
-        todayFragmentAdapter = new habitViewAdapter(habitList, this);
+        todayHabitList = this.getTodaysHabits();
+
+        allHabitsAdapter = new habitViewAdapter(habitList, this);
+        todayHabitsAdapter = new habitViewAdapter(todayHabitList, this);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
         {
@@ -116,59 +120,44 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
     {
         this.habitList.clear();
         this.habitList.addAll(dataStore.getHabits());
-        todayFragmentAdapter.notifyDataSetChanged();
+        this.todayHabitList.clear();
+        this.todayHabitList.addAll(getTodaysHabits());
+
+        todayHabitsAdapter.notifyDataSetChanged();
+        allHabitsAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment
+    public ArrayList<Habit> getTodaysHabits()
     {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {}
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber)
+        ArrayList<Habit> todayHabits = new ArrayList<Habit>();
+        int Today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        for (Habit habit: habitList)
         {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
+            if (habit.activeOn(Today))
+            {
+                todayHabits.add(habit);
+            }
         }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
-        {
-            View rootView = inflater.inflate(R.layout.fragment_habit_list, container, false);
-            return rootView;
-        }
+        return todayHabits;
     }
 
     /**
      * Created by Ryan on 2016-09-23.
      */
-    public static class TodayHabitsFragment extends Fragment
+    public static class HabitsFragment extends Fragment
     {
 
         private ListView habitsListView;
+        private habitViewAdapter adapter;
 
-        public TodayHabitsFragment()
+        public HabitsFragment()
         {}
 
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public static TodayHabitsFragment newInstance(int sectionNumber)
+        public static HabitsFragment newInstance(int sectionNumber)
         {
-            TodayHabitsFragment fragment = new TodayHabitsFragment();
+            HabitsFragment fragment = new HabitsFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
@@ -179,7 +168,8 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_habit_list, container, false);
             habitsListView = (ListView) rootView.findViewById(R.id.habitListView);
-            habitsListView.setAdapter(todayFragmentAdapter);
+            habitsListView.setAdapter(adapter);
+
             habitsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 @Override
@@ -188,12 +178,17 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
                     //Generate an intent then open the detail view
                     Intent myIntent = new Intent(getActivity().getApplicationContext(), EditHabitActivity.class);
                     myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    myIntent.putExtra("position", position);
+                    myIntent.putExtra("Habit", (Habit)adapter.getItem(position));
                     getActivity().getApplicationContext().startActivity(myIntent);
                 }
             });
 
             return rootView;
+        }
+
+        public void setAdapter(habitViewAdapter adapter)
+        {
+            this.adapter = adapter;
         }
     }
 
@@ -214,21 +209,23 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
         {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(position == 0)
+            HabitsFragment fragment = HabitsFragment.newInstance(position + 1);
+            if (position == TODAY_SECTION_NUMBER)
             {
-                return TodayHabitsFragment.newInstance(position + 1);
+                fragment.setAdapter(todayHabitsAdapter);
             }
             else
             {
-                return PlaceholderFragment.newInstance(position + 1);
+                fragment.setAdapter(allHabitsAdapter);
             }
+            return fragment;
         }
 
         @Override
         public int getCount()
         {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override
@@ -237,11 +234,9 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
             switch (position)
             {
                 case 0:
-                    return "Today";
+                    return "Today's Habits";
                 case 1:
-                    return "History";
-                case 2:
-                    return "Habits";
+                    return "All Habits";
             }
             return null;
         }
