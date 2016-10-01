@@ -59,12 +59,17 @@ public class habitViewAdapter extends BaseAdapter implements ListAdapter
         addBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                list.get(position).addCompletion();
-                notifyDataSetChanged();
-                HabitDataStore.getInstance().saveHabitHistory(context);
+            addCompletion(position);
             }
         });
 
         return view;
+    }
+
+    private void addCompletion(int position)
+    {
+        list.get(position).addCompletion();
+        notifyDataSetChanged();
+        HabitDataStore.getInstance().saveHabitHistory(context);
     }
 }

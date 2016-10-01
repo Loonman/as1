@@ -17,13 +17,11 @@ import java.util.List;
 public class EditHabitActivity extends AppCompatActivity implements Notifiable
 {
     private static completionsListAdapter adapter;
-    private ArrayList<Calendar> completionHist;
     private Habit habitToView;
-    private int position;
     private ListView completionListView;
     private TextView habitName;
     private TextView completionCount;
-    HabitDataStore dataStore;
+    private HabitDataStore dataStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

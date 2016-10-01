@@ -14,11 +14,10 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class AddHabitActivity extends AppCompatActivity
 {
-    private static Calendar cal;
+    private static Calendar creationTime;
     private static TextView dateText;
     private HabitDataStore dataStore;
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -28,7 +27,7 @@ public class AddHabitActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
 
-        cal = Calendar.getInstance();
+        creationTime = Calendar.getInstance();
         dateText = (TextView)findViewById(R.id.activeDate);
         dataStore = HabitDataStore.getInstance();
         this.showDate();
@@ -66,14 +65,14 @@ public class AddHabitActivity extends AppCompatActivity
 
     public static void setDate(int year, int month, int day)
     {
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, day);
+        creationTime.set(Calendar.YEAR, year);
+        creationTime.set(Calendar.MONTH, month);
+        creationTime.set(Calendar.DAY_OF_MONTH, day);
     }
 
     public static void showDate()
     {
-        dateText.setText(dateFormat.format(cal.getTime()));
+        dateText.setText(dateFormat.format(creationTime.getTime()));
     }
 
     public void createHabit(View v)
@@ -118,7 +117,7 @@ public class AddHabitActivity extends AppCompatActivity
         }
         Habit newHabit = new Habit(habitName.getText().toString(), daysOfWeek);
 
-        newHabit.setCreationTime(cal);
+        newHabit.setCreationTime(creationTime);
         dataStore.addHabit(newHabit, this);
         finish();
     }
