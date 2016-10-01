@@ -17,6 +17,30 @@ import java.util.ArrayList;
 
 /**
  * Created by Ryan on 2016-09-13.
+ *
+ * HabitDataStore is a singleton class that acts as the gatekeeper to persistent storage of habits
+ * for a user.
+ *
+ * The first activity to make use of the HabitDataStore should invoke the loadHabitHistory method
+ * since the method requires a Context to access the filesystem.
+ *
+ * Maintains a static HabitDataStore to serve to classes which call getInstance()
+ *
+ * Maintains a list of Habits that are served to classes requesting habits through getHabits() as a copy
+ *  -- This prevents consumers from editing the master list without the habitDataStore being aware
+ *
+ * This list can be edited through addHabit and removeHabit which directly interact with the internal
+ * list
+ *
+ * HabitDataStore also acts as a controller, by calling addObserver and removeObserver a class which
+ * implements Notifiable can then be notified of data changes by habitDataStore when it or another
+ * class calls addHabit or removeHabit. This occurs through the notifyObservers method
+ *
+ * Idiosyncracies of HabitDataStore:
+ * --To remove a completion of a habit one should use the getHabit method to ensure they have a reference
+ *   to the internal habit of the data store and then call deleteCompletion on the completion
+ * --The first activity to instantiate a datastore must call loadHabitHistory to get the persistent
+ *   history
  */
 public class HabitDataStore
 {
