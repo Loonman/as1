@@ -175,4 +175,10 @@ public class HabitDataStore
 
     }
 
+    public void emptyStore(Context context)
+    {
+        this.habits.clear();
+        this.saveHabitHistory(context);
+    }
+
 }

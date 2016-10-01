@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HabitTracker-rhuard</string>
+    <string name="app_name">rhuard-HabitTracker</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="todays_habits">I\'m todays habits fragment</string>
