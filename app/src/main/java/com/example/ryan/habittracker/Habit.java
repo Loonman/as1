@@ -71,9 +71,11 @@ public class Habit implements Serializable
     }
 
 
-    // When we pass habits between activities with an intent they must be serialized.
-    // When deserialized it is no longer the same object as was passed in
-    // To get around this we override equals such that it compares uuids
+    /**
+     * When we pass habits between activities with an intent they must be serialized.
+     * When deserialized it is no longer the same object as was passed in
+     * To get around this we override equals such that it compares uuids
+     */
     @Override
     public boolean equals(Object otherHabit)
     {
@@ -92,8 +94,10 @@ public class Habit implements Serializable
         return false;
     }
 
-    // Allows the user to set the creation time in case they want a habit to begin activity in the
-    // future
+    /**
+     * Allows the user to set the creation time in case they want a habit to begin activity in the
+     * future
+     */
     public void setCreationTime(Calendar cal)
     {
         this.creationTime = cal;
@@ -122,8 +126,10 @@ public class Habit implements Serializable
         this.completionCount--;
     }
 
-    // Determine if a habit is active on a day of the week -- Day should be passed in as one of the
-    // static fields in Calendar such as Calendar.MONDAY
+    /**
+     * Determine if a habit is active on a day of the week -- Day should be passed in as one of the
+     * static fields in Calendar such as Calendar.MONDAY
+     */
     public boolean activeOn(int Day)
     {
         return this.daysOfWeek.contains(Day);

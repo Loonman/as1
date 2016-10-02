@@ -15,8 +15,9 @@ import java.util.Calendar;
 
 /**
  * Created by Ryan on 2016-09-26.
+ * Custom adapter for displaying a list item with a button
+ * Buttons in a listview example taken from http://stackoverflow.com/a/23021960
  */
-// Buttons in a listview example taken from http://stackoverflow.com/a/23021960
 public class completionsListAdapter extends BaseAdapter implements ListAdapter
 {
     private Habit habit;
@@ -41,7 +42,6 @@ public class completionsListAdapter extends BaseAdapter implements ListAdapter
     @Override
     public long getItemId(int pos) {
         return 0;
-        //just return 0 if your list items do not have an Id variable.
     }
 
     @Override
@@ -69,6 +69,9 @@ public class completionsListAdapter extends BaseAdapter implements ListAdapter
         return view;
     }
 
+    /**
+     * Delete a habit completion and notify the owner activity that the data set has been changed
+     */
     private void deleteCompletion(int position)
     {
         habit.deleteCompletion(habit.getCompletions().get(position));

@@ -13,8 +13,10 @@ import java.util.ArrayList;
 
 /**
  * Created by Ryan on 2016-09-26.
+ * Custom adapter for displaying list items with buttons
+ * Buttons in a listview example taken from http://stackoverflow.com/a/23021960
  */
-// Buttons in a listview example taken from http://stackoverflow.com/a/23021960
+//
 public class habitViewAdapter extends BaseAdapter implements ListAdapter
 {
     private ArrayList<Habit> list = new ArrayList<Habit>();

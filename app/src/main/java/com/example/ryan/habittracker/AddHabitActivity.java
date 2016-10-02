@@ -15,6 +15,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * Created by Ryan on 2016-09-26.
+ * Activity for creating and adding a habit to the data store. Shows the user a view that allows
+ * them to configure a habit including the name, creation date, and active days of the week. Also
+ * allows the user to cancel making a habit.
+ */
 public class AddHabitActivity extends AppCompatActivity
 {
     private static Calendar creationTime;
@@ -26,14 +32,17 @@ public class AddHabitActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
+        dateText = (TextView)findViewById(R.id.activeDate);
 
         creationTime = Calendar.getInstance();
-        dateText = (TextView)findViewById(R.id.activeDate);
         dataStore = HabitDataStore.getInstance();
         this.showDate();
     }
 
-    //Adapted from https://developer.android.com/guide/topics/ui/controls/pickers.html
+    /**
+     * Taken from https://developer.android.com/guide/topics/ui/controls/pickers.html
+     * Shows a date picker to the user
+     */
     public static class DatePickerFragment extends DialogFragment
                         implements DatePickerDialog.OnDateSetListener
     {
@@ -63,6 +72,9 @@ public class AddHabitActivity extends AppCompatActivity
         this.showDate();
     }
 
+    /**
+     * Change the internal date
+     */
     public static void setDate(int year, int month, int day)
     {
         creationTime.set(Calendar.YEAR, year);
@@ -70,11 +82,17 @@ public class AddHabitActivity extends AppCompatActivity
         creationTime.set(Calendar.DAY_OF_MONTH, day);
     }
 
+    /**
+     * Display the date to the user
+     */
     public static void showDate()
     {
         dateText.setText(dateFormat.format(creationTime.getTime()));
     }
 
+    /**
+     * Create a habit from the entered information
+     */
     public void createHabit(View v)
     {
         EditText habitName = (EditText) findViewById(R.id.habitNameEdit);
@@ -121,6 +139,7 @@ public class AddHabitActivity extends AppCompatActivity
         dataStore.addHabit(newHabit, this);
         finish();
     }
+
     public void cancel(View v)
     {
         finish();

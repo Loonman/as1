@@ -14,6 +14,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Activity for editing habits. Displays a view that gives the user options for editing activities
+ * by deleting their completions or deleting the habit entirely.
+ *
+ * Called EditHabitActivity such that it could be extended in the future to support more editing
+ * other than deleting habits and completions
+ */
 public class EditHabitActivity extends AppCompatActivity implements Notifiable
 {
     private static completionsListAdapter adapter;

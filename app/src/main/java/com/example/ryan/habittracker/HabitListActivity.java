@@ -23,17 +23,16 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * Main activity of the app, used to display habits to the user in 2 lists, all habits and todays
+ * habits.
+ *
+ * This activity is also responsible for kicking off the other activites for adding habits and
+ * deleting/modifying habits.
+ */
 public class HabitListActivity extends AppCompatActivity implements Notifiable
 {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private static ArrayList<Habit> habitList;
     private static ArrayList<Habit> todayHabitList;
@@ -41,10 +40,6 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
     private static habitViewAdapter todayHabitsAdapter;
     private static habitViewAdapter allHabitsAdapter;
     private static final int TODAY_SECTION_NUMBER = 0;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
 
     @Override
@@ -143,6 +138,7 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
 
     /**
      * Created by Ryan on 2016-09-23.
+     * Custom Fragment for displaying a list of habits to the user
      */
     public static class HabitsFragment extends Fragment
     {
@@ -193,10 +189,6 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
     }
 
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter
     {
 
@@ -207,8 +199,6 @@ public class HabitListActivity extends AppCompatActivity implements Notifiable
         @Override
         public Fragment getItem(int position)
         {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             HabitsFragment fragment = HabitsFragment.newInstance(position + 1);
             if (position == TODAY_SECTION_NUMBER)
             {
