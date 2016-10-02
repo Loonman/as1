@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,132 +25,141 @@
             android:text="Create a new habit"
             style="@style/AppTheme.AppBarOverlay"/>
     </LinearLayout>
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textSize="18dp"
-        android:id="@+id/habitname"
-        android:paddingLeft="16dp"
-        android:paddingTop="16dp"
         android:layout_below="@+id/layout1"
-        android:text="Habit name"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/habitNameEdit"
-        android:paddingTop="16dp"
-        android:layout_below="@+id/habitname"
-        android:layout_alignLeft="@+id/habitname"
-        android:paddingLeft="16dp"/>
+        android:layout_above="@+id/createButton"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3px">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="18dp"
+                android:id="@+id/habitname"
+                android:paddingLeft="16dp"
+                android:paddingTop="5dp"
+                android:text="Habit name"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/habitNameEdit"
+                android:paddingTop="5dp"
+                android:layout_below="@+id/habitname"
+                android:layout_alignLeft="@+id/habitname"
+                android:paddingLeft="16dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/CreateDate"
-        android:textColor="@android:color/black"
-        android:text="Active since: "
-        android:textSize="18dp"
-        android:paddingTop="16dp"
-        android:paddingLeft="16dp"
-        android:layout_below="@id/habitNameEdit"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black"
-        android:text="2016-05-23"
-        android:id="@+id/activeDate"
-        android:layout_alignBottom="@id/CreateDate"
-        android:layout_alignStart="@+id/button"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/CreateDate"
+                android:textColor="@android:color/black"
+                android:text="Active since: "
+                android:textSize="18dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="16dp"
+                android:layout_below="@id/habitNameEdit"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black"
+                android:text=""
+                android:id="@+id/activeDate"
+                android:layout_alignBottom="@id/CreateDate"
+                android:layout_alignStart="@+id/button"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change active date"
-        android:id="@+id/button"
-        android:layout_below="@+id/CreateDate"
-        android:layout_toEndOf="@+id/Wednesday"
-        android:onClick="showDatePickerDialog"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change active date"
+                android:id="@+id/button"
+                android:layout_below="@+id/CreateDate"
+                android:layout_toEndOf="@+id/Wednesday"
+                android:onClick="showDatePickerDialog"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/button"
-        android:id="@+id/repeatText"
-        android:text="Repeats on days"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black"
-        android:layout_alignStart="@id/CreateDate"
-        android:layout_marginLeft="16dp"
-        />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/button"
+                android:id="@+id/repeatText"
+                android:text="Repeats on days"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black"
+                android:layout_alignStart="@id/CreateDate"
+                android:layout_marginLeft="16dp"
+                />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sunday"
-        android:id="@+id/Sunday"
-        android:layout_below="@id/repeatText"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="28dp"
-        android:layout_alignStart="@+id/Monday"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sunday"
+                android:id="@+id/Sunday"
+                android:layout_below="@id/repeatText"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="28dp"
+                android:layout_alignStart="@+id/Monday"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Monday"
-        android:id="@+id/Monday"
-        android:layout_below="@+id/Sunday"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="28dp"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monday"
+                android:id="@+id/Monday"
+                android:layout_below="@+id/Sunday"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="28dp"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tuesday"
-        android:id="@+id/Tuesday"
-        android:layout_below="@+id/Monday"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="28dp"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tuesday"
+                android:id="@+id/Tuesday"
+                android:layout_below="@+id/Monday"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="28dp"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wednesday"
-        android:id="@+id/Wednesday"
-        android:layout_below="@id/Tuesday"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="28dp"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wednesday"
+                android:id="@+id/Wednesday"
+                android:layout_below="@+id/Tuesday"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="28dp"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thursday"
-        android:id="@+id/Thursday"
-        android:layout_below="@+id/Wednesday"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="28dp"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thursday"
+                android:id="@+id/Thursday"
+                android:layout_below="@+id/Wednesday"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="28dp"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Friday"
-        android:id="@+id/Friday"
-        android:layout_below="@+id/Thursday"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="28dp"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Friday"
+                android:id="@+id/Friday"
+                android:layout_below="@+id/Thursday"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="28dp"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Saturday"
-        android:id="@+id/Saturday"
-        android:layout_below="@+id/Friday"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="28dp"/>
-
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saturday"
+                android:id="@+id/Saturday"
+                android:layout_below="@+id/Friday"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="28dp"/>
+        </RelativeLayout>
+    </ScrollView>
     <Button
         android:layout_width="175dp"
         android:layout_height="wrap_content"
